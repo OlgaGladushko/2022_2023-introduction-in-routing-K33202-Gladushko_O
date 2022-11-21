@@ -1,11 +1,19 @@
 University: [ITMO University](https://itmo.ru/ru/)
-> Faculty: [FICT](https://fict.itmo.ru)
+
+Faculty: [FICT](https://fict.itmo.ru)
+
 Course: [Introduction in routing](https://github.com/itmo-ict-faculty/introduction-in-routing)
+
 Year: 2022/2023
+
 Group: K33202
+
 Author: Gladushko Olga
+
 Lab: Lab1
+
 Date of create: 18.11.2022
+
 Date of finished: 2.12.2022
 ---
 # Отчет по лабораторной работе №1
