@@ -27,24 +27,31 @@ Date of finished: 2.12.2022
 
 ## Ход работы
 Текст файла с расширением .yaml прикреплен в папке Lab1. Он был использован для развертывания тестоой сети.
+
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок1.png)
 
 Далее были настроены IP-дреса на интерфейсах и 2 VLAN-а для PC1 и PC2. После чего были созданы 2 DHCP-сервера на центральном роутере во VLAN-ах для раздачи IP-адресов. 
 
 Конфигурация центрального роутера (RO1) после проделанных действий:
+
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок2.png)
 
 Конфигурация коммутатора 1-го уровня:
+
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок3.png)
 
 Конфигурация одного из коммутаторов 2-го уровня:
+
 ![](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок4.png)
 
 Далее настроим имена устройств: сменим их логины и пароли. Пример (центральный роутер):
+
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок6.png)
 
 Проверим, что все работает:
+
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок5.png)
+
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/Рисунок8.png)
 
 ### Вывод
