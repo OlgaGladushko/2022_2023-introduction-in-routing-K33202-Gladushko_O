@@ -1,0 +1,44 @@
+name: lab1
+prefix: ""
+
+mgmt: 
+  network: statics
+  ipv4_subnet: 172.20.20.0/24
+
+topology:
+  nodes:
+    RO1:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.20.20.50
+    
+    SWO01.L3.01:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.20.20.51
+    
+    SWO02.L3.01:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.20.20.52
+    
+    SWO02.L3.02:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.20.20.53
+    
+    PC1:
+      kind: linux
+      image: ubuntu:latest
+      mgmt_ipv4: 172.20.20.64
+    
+    PC2:
+      kind: linux
+      image: ubuntu:latest
+      mgmt_ipv4: 172.20.20.65
+  links:
+    - endpoints: ["RO1:eth1", "SWO01.L3.01:eth1"]
+    - endpoints: ["SWO01.L3.01:eth2", "SWO02.L3.01:eth1"]
+    - endpoints: ["SWO01.L3.01:eth3", "SWO02.L3.02:eth1"]
+    - endpoints: ["SWO02.L3.01:eth2", "PC1:eth1"]
+    - endpoints: ["SWO02.L3.02:eth2", "PC2:eth1"]
