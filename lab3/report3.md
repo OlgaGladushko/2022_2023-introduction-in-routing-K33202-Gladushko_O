@@ -252,7 +252,7 @@ add disabled=no interface=ether1
 set name=PC1
 ```
 
-Выкладки с маршрутами:
+Таблицы MPLS маршрутов:
 
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/NY.png)
 
