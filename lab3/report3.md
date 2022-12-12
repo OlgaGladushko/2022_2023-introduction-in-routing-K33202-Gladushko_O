@@ -12,9 +12,9 @@ Author: Gladushko Olga
 
 Lab: Lab1
 
-Date of create: 18.11.2022
+Date of create: 13.12.2022
 
-Date of finished: 2.12.2022
+Date of finished: 16.12.2022
 
 ---
 # Отчет по лабораторной работе №3
@@ -28,11 +28,12 @@ Date of finished: 2.12.2022
 ## Ход работы
 Текст файла с расширением .yaml прикреплен в папке Lab3. Он был использован для развертывания тестоой сети.
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок2.png)
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/Рисунок1.png)
 
 Были настроены IP-адреса на интерфейсах, также был создан виртуальный интерфейс на который был дан IP-адрес. 
 Также были настроены OSPF и MPLS на всех роутерах с помощью следующих команд:
-```routing ospf instance set 0 router-id=x.x.x.x
+```
+routing ospf instance set 0 router-id=x.x.x.x
 routing ospf network add area=backbone
 mpls ldp set enabled=yes transport-address=x.x.x.x
 mpls ldp interface add interface=ether*
@@ -40,7 +41,8 @@ mpls ldp interface add interface=ether*
 Здесь x.x.x.x - адрес на виртуально интерфейсе, а ether* - интерфейсы смотрящие "внутрь" MPLS сети.
 
 Далее на роутерах NY и SPB была настроена EoMPLS:
-```interface bridge add name=EoMPLS
+```
+interface bridge add name=EoMPLS
 interface vpls add cisco-style=yes cisco-style-id=666 disabled=no name=EoMPLS_vpls remote-peer=x.x.x.x
 interface bridge port add bridge=EoMPLS interface=ether*
 interface bridge port add bridge=EoMPLS interface=EoMPLS_vpls
@@ -50,7 +52,8 @@ interface bridge port add bridge=EoMPLS interface=EoMPLS_vpls
 Далее будут представлены конфигурации всех устройств:
 
 ### Роутер NY (RO1.NY)
-```/interface bridge
+```
+/interface bridge
 add name=EoMPLS
 add name lo0
 /interface vpls
@@ -81,7 +84,8 @@ set name=RO1.NY
 ```
 
 ### Роутер LND (RO1.LND)
-```/interface bridge
+```
+/interface bridge
 add name lo0
 /interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
@@ -106,7 +110,8 @@ set name=RO1.LND
 ```
 
 ### Роутер HKI (RO1.HKI)
-```/interface bridge
+```
+/interface bridge
 add name lo0
 /interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
@@ -133,7 +138,8 @@ set name=RO1.HKI
 ```
 
 ### Роутер SPB (RO1.SPB)
-```/interface bridge
+```
+/interface bridge
 add name=EoMPLS
 add name lo0
 /interface vpls
@@ -164,7 +170,8 @@ set name=RO1.SPB
 ```
 
 ### Роутер MSK (RO1.MSK)
-```/interface bridge
+```
+/interface bridge
 add name lo0
 /interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
@@ -189,7 +196,8 @@ set name=RO1.MSK
 ```
 
 ### Роутер LBN (RO1.LBN)
-```/interface bridge
+```
+/interface bridge
 add name lo0
 /interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
@@ -218,7 +226,8 @@ set name=RO1.LBN
 На устройствах SGI_Prism и PC1 были выданы IP-адреса на интерфейсы. Их конфигурация:
 
 ### SGI_Prism 
-```/interface wireless security-profiles 
+```
+/interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
 /ip address 
 add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
@@ -230,7 +239,8 @@ set name=SGI_Prism
 ```
 
 ### PC1 
-```/interface wireless security-profiles 
+```
+/interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
 /ip address 
 add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
@@ -241,19 +251,25 @@ add disabled=no interface=ether1
 set name=PC1
 ```
 
-Далее настроим имена устройств: сменим их логины и пароли. Пример (роутер MSK):
+Выкладки с маршрутами:
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок12.png)
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/NY.png)
 
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/LND.png)
 
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/HKI.png)
 
-Проверим, что все работает:
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/SPB.png)
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок9.png)
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/MSK.png)
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок10.png)
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/LBN.png)
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок11.png)
+А также проверим сеть на работоспособность пингами с SGI_Prism на PC1 и обратно:
+
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/ping1.png)
+
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/ping2.png)
 
 ### Вывод
-В ходе лабораторной работы была сделана сеть связи, в которой была настроена статистическая маршрутизация. Также на трех роутерах были созданы DHCP-серверы в сторону клиентских устройств. Работоспособность сети подтвердили пинги.
+В ходе лабораторной работы была сделана IP/MPLS сеть связи, в которой были настроены OSPF И MPLS, а также EoMPLS. Работоспособность сети подтвердили пинги.
