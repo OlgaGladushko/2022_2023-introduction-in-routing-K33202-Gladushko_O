@@ -39,7 +39,7 @@ routing ospf network add area=backbone
 mpls ldp set enabled=yes transport-address=x.x.x.x
 mpls ldp interface add interface=ether*
 ```
-Здесь x.x.x.x - адрес на виртуально интерфейсе, а ether* - интерфейсы смотрящие "внутрь" MPLS сети.
+Здесь x.x.x.x - адрес на виртуальном интерфейсе, а ether* - интерфейсы, смотрящие "внутрь" MPLS сети.
 
 Далее на роутерах NY и SPB была настроена EoMPLS:
 ```
