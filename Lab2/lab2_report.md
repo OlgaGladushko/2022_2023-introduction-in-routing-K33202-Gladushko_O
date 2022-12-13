@@ -30,7 +30,16 @@ Date of finished: 2.12.2022
 
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок2.png)
 
-Далее были настроены IP-дреса на интерфейсах роутеров, созданы DHCP-серверы и настроена статистическая маршрутизация. 
+Далее были настроены IP-дреса на интерфейсах роутеров. Также были созданы DHCP-серверы с омощью слкдующих команд:
+
+```
+ip pool add name=poolx ranges=192.168.x.5-192.168.x.250
+ip dhcp-server nework add address=192.168.x.0/24 gateway=192.168.x.1
+ip dhcp-server add address-pool=poolx disabled=no interface=ether4 name=serverx
+```
+Здесь x - 10, 20 или 30, в зависимости от настраевоемого маршрутизатора (по порядку настройки).
+
+Далее была настроена статистическая маршрутизация для доступности хостов из других подсетей (для хостов были также добавлены маршруты к другим роутерам). 
 
 Конфигурация роутера MSK (RO1.MSK) после проделанных действий:
 
@@ -60,7 +69,7 @@ Date of finished: 2.12.2022
 
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок12.png)
 
-Проверим, что все работает:
+Проверим пингами, что все работает:
 
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab2/Рисунок9.png)
 
