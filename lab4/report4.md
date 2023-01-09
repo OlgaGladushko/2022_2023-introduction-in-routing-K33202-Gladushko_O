@@ -38,7 +38,7 @@ routing bgp instance set default client-to-client-reflection=no router-id=x.x.x.
 routing bgp network add network=172.40.0.0/16
 routing bgp peer add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer* remote-address=y.y.y.y remote-as=65530 update-source=Lo
 ```
-Здесь x.x.x.x - адрес на виртуальном интерфейсе, y.y.y.y - адреса соседних устройств (также на виртуальном интерфейсе)
+Здесь x.x.x.x - адрес на виртуальном интерфейсе, y.y.y.y - адреса соседних сетевых устройств (также на виртуальном интерфейсе).
 
 На трех роутерах NY, SPB и SVL был настроен VRF:
 ```
@@ -67,7 +67,7 @@ add address=192.168.66.1/30 interface=ether2
 /ip dhcp-client 
 add disabled=no interface=ether1
 /ip route vrf 
-add export-route-targets=65530:666 import-route-targets=65530:666 interfaces=ether* route-distinguisher=65530:666 routing-mark=VRF_DEVOPS
+add export-route-targets=65530:666 import-route-targets=65530:666 interfaces=ether2 route-distinguisher=65530:666 routing-mark=VRF_DEVOPS
 /mpls ldp
 set enabled=yes
 /mpls ldp interface
@@ -84,56 +84,188 @@ add area=backbone
 set name=RO1.NY
 ```
 
+### Роутер LND (RO1.LND)
+```
+/interface bridge
+add name Lo
+/interface wireless security-profiles 
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance 
+set default router-id=10.0.11.1
+/routing ospf instance
+set [ find default=yes ] router-id=10.0.11.1
+/ip address 
+add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
+add address=10.0.11.1/32 interface=Lo
+add address=172.40.40.1/30 interface=ether2
+add address=172.40.40.5/30 interface=ether3
+add address=172.40.40.17/30 interface=ether4
+/ip dhcp-client 
+add disabled=no interface=ether1
+/mpls ldp
+set enabled=yes
+/mpls ldp interface
+add interface=ether2
+add interface=ether3
+add interface=ether4
+/routing bgp network 
+add network=172.40.0.0/16
+/routing bgp peer 
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.12.1 remote-as=65530 route-reflect=yes update-source=Lo
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer2 remote-address=10.0.10.1 remote-as=65530 update-source=Lo
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.14.1 remote-as=65530 route-reflect=yes update-source=Lo
+/routing ospf network
+add area=backbone
+/system identity 
+set name=RO1.LND
+```
+
 ### Роутер LBN (RO1.LBN)
-
-
-На устройствах SGI_Prism и PC1 были выданы IP-адреса на интерфейсы. Их конфигурация:
-
-### SGI_Prism 
 ```
+/interface bridge
+add name Lo
 /interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance 
+set default router-id=10.0.12.1
+/routing ospf instance
+set [ find default=yes ] router-id=10.0.12.1
 /ip address 
 add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
-add address=192.168.10.1/24 interface=ether2 network=192.168.10.0
+add address=10.0.12.1/32 interface=Lo
+add address=172.40.40.6/30 interface=ether2
+add address=172.40.40.9/30 interface=ether3
+add address=172.40.40.13/30 interface=ether4
 /ip dhcp-client 
 add disabled=no interface=ether1
+/mpls ldp
+set enabled=yes
+/mpls ldp interface
+add interface=ether2
+add interface=ether3
+add interface=ether4
+/routing bgp network 
+add network=172.40.0.0/16
+/routing bgp peer 
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.11.1 remote-as=65530 route-reflect=yes update-source=Lo
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer2 remote-address=10.0.13.1 remote-as=65530 update-source=Lo
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.14.1 remote-as=65530 route-reflect=yes update-source=Lo
+/routing ospf network
+add area=backbone
 /system identity 
-set name=SGI_Prism
+set name=RO1.LBN
 ```
 
-### PC1 
+### Роутер SVL (RO1.SVL)
 ```
+/interface bridge
+add name Lo
 /interface wireless security-profiles 
 set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance 
+set default client-to-client-reflection=no router-id=10.0.13.1
+/routing ospf instance
+set [ find default=yes ] router-id=10.0.13.1
 /ip address 
 add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
-add address=192.168.10.2/24 interface=ether2 network=192.168.10.0
+add address=10.0.13.1/32 interface=Lo
+add address=172.40.40.10/30 interface=ether2
+add address=192.168.66.9/30 interface=ether3
 /ip dhcp-client 
 add disabled=no interface=ether1
+/ip route vrf 
+add export-route-targets=65530:666 import-route-targets=65530:666 interfaces=ether3 route-distinguisher=65530:666 routing-mark=VRF_DEVOPS
+/mpls ldp
+set enabled=yes
+/mpls ldp interface
+add interface=ether2
+/routing bgp instance vrf 
+add redistribute-connected=yes routing-mark=VRF_DEVOPS
+/routing bgp network 
+add network=172.40.0.0/16
+/routing bgp peer 
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.12.1 remote-as=65530 update-source=Lo
+/routing ospf network
+add area=backbone
 /system identity 
-set name=PC1
+set name=RO1.SVL
 ```
 
-Таблицы MPLS маршрутов:
+### Роутер HKI (RO1.HKI)
+```
+/interface bridge
+add name Lo
+/interface wireless security-profiles 
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance 
+set default router-id=10.0.14.1
+/routing ospf instance
+set [ find default=yes ] router-id=10.0.14.1
+/ip address 
+add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
+add address=10.0.14.1/32 interface=Lo
+add address=172.40.40.18/30 interface=ether2
+add address=172.40.40.14/30 interface=ether3
+add address=172.40.40.21/30 interface=ether4
+/ip dhcp-client 
+add disabled=no interface=ether1
+/mpls ldp
+set enabled=yes
+/mpls ldp interface
+add interface=ether2
+add interface=ether3
+add interface=ether4
+/routing bgp network 
+add network=172.40.0.0/16
+/routing bgp peer 
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.11.1 remote-as=65530 route-reflect=yes update-source=Lo
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer2 remote-address=10.0.15.1 remote-as=65530 update-source=Lo
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.12.1 remote-as=65530 route-reflect=yes update-source=Lo
+/routing ospf network
+add area=backbone
+/system identity 
+set name=RO1.HKI
+```
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/NY.png)
+### Роутер SPB (RO1.SPB)
+```
+/interface bridge
+add name Lo
+/interface wireless security-profiles 
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance 
+set default client-to-client-reflection=no router-id=10.0.15.1
+/routing ospf instance
+set [ find default=yes ] router-id=10.0.15.1
+/ip address 
+add address=172.31.255.30/30 interface=ether1 network=172.31.255.28 
+add address=10.0.15.1/32 interface=Lo
+add address=172.40.40.22/30 interface=ether2
+add address=192.168.66.21/30 interface=ether3
+/ip dhcp-client 
+add disabled=no interface=ether1
+/ip route vrf 
+add export-route-targets=65530:666 import-route-targets=65530:666 interfaces=ether3 route-distinguisher=65530:666 routing-mark=VRF_DEVOPS
+/mpls ldp
+set enabled=yes
+/mpls ldp interface
+add interface=ether2
+/routing bgp instance vrf 
+add redistribute-connected=yes routing-mark=VRF_DEVOPS
+/routing bgp network 
+add network=172.40.0.0/16
+/routing bgp peer 
+add address-families=ip, l2vpn, l2vpn-cisco, vpn4 name=peer1 remote-address=10.0.14.1 remote-as=65530 update-source=Lo
+/routing ospf network
+add area=backbone
+/system identity 
+set name=RO1.SPB
+```
+Проверяем VRF:
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/LND.png)
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/ping.png)
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/HKI.png)
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/SPB.png)
-
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/MSK.png)
-
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/LBN.png)
-
-А также проверим сеть на работоспособность пингами с SGI_Prism на PC1 и обратно:
-
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/ping1.png)
-
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/ping2.png)
 
 ### Вывод
 В ходе лабораторной работы была сделана IP/MPLS сеть связи, в которой были настроены OSPF И MPLS, а также EoMPLS. Работоспособность сети подтвердили пинги.
