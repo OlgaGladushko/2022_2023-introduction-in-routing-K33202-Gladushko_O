@@ -1,0 +1,56 @@
+name: lab4
+prefix: ""
+
+mgmt: 
+  network: dynamic
+  ipv4_subnet: 172.40.40.0/24
+
+topology:
+  nodes:
+    RO1.NY:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.50
+    RO1.LND:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.51
+    RO1.LBN:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.52
+    RO1.HKI:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.53
+    RO1.SVL:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.54
+    RO1.SPB:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.55 
+    PC1:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.56            
+    PC2:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.57  
+    PC3:
+      kind: vr-ros
+      image: vrnetlab/vr-routeros:6.47.9
+      mgmt_ipv4: 172.40.40.58
+
+  links:
+    - endpoints: ["PC2:eth1","RO1.NY:eth1"]         
+    - endpoints: ["RO1.NY:eth2","RO1.LND:eth1"]     
+    - endpoints: ["RO1.LND:eth2","RO1.LBN:eth1"]     
+    - endpoints: ["RO1.LND:eth3","RO1.HKI:eth1"]      
+    - endpoints: ["RO1.LBN:eth2","RO1.SVL:eth1"]
+    - endpoints: ["RO1.SVL:eth2","PC3:eth1"]
+    - endpoints: ["RO1.LBN:eth3","RO1.HKI:eth2"]
+    - endpoints: ["RO1.HKI:eth3","RO1.SPB:eth1"]
+    - endpoints: ["RO1.SPB:eth2","PC1:eth1"]
