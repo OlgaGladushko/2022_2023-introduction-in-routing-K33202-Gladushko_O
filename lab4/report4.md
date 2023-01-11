@@ -31,7 +31,7 @@ Date of finished: 13.01.2023
 
 Схема связи сети:
 
-![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/Часть1.png)
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/Часть1.drawio.png)
 
 Текст файла с расширением .yaml прикреплен в папке Lab4. Он был использован для развертывания тестоой сети.
 
