@@ -28,6 +28,11 @@ Date of finished: 13.01.2023
 
 ## Ход работы
 ## Часть 1
+
+Схема связи сети:
+
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/Часть1.png)
+
 Текст файла с расширением .yaml прикреплен в папке Lab4. Он был использован для развертывания тестоой сети.
 
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/Снимок.png)
@@ -267,6 +272,11 @@ set name=RO1.SPB
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/ping.png)
 
 ## Часть 2
+
+
+Схема связи сети:
+
+![.](https://github.com/OlgaGladushko/pictures/blob/main/lab4/Часть2.drawio.png)
 
 После выполнения первой части работы VRF был разобран на трех роутерах (NY, SPB и SVL), а далее на них был собран VPLS c помощью команд:
 ```
