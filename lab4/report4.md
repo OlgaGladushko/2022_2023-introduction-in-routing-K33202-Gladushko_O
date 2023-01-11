@@ -14,7 +14,7 @@ Lab: Lab4
 
 Date of create: 16.12.2022
 
-Date of finished: 10.01.2023
+Date of finished: 13.01.2023
 
 ---
 # Отчет по лабораторной работе №4
