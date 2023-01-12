@@ -10,7 +10,7 @@ Group: K33202
 
 Author: Gladushko Olga
 
-Lab: Lab1
+Lab: Lab3
 
 Date of create: 13.12.2022
 
@@ -27,6 +27,10 @@ Date of finished: 16.12.2022
 Изучить протоколы OSPF и MPLS, механизмы организации EoMPLS.
 
 ## Ход работы
+
+Схема сети:
+![.](https://github.com/OlgaGladushko/2022_2023-introduction-in-routing-K33202-Gladushko_O/blob/main/lab3/lab3.drawio.png)
+
 Текст файла с расширением .yaml прикреплен в папке Lab3. Он был использован для развертывания тестоой сети.
 
 ![.](https://github.com/OlgaGladushko/pictures/blob/main/lab3/Рисунок1.png)
